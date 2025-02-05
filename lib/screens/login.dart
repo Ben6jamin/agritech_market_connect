@@ -34,14 +34,18 @@ class _LoginScreenState extends State<LoginScreen> {
 
     // Send POST request to the Django backend
     try {
+      print("Email: $email");
+      print("Password: $password");
       final response = await http.post(
-        Uri.parse('http://10.0.2.2:8000/api/login/'),
+        Uri.parse('http://192.168.2.112:8000/api/login/'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode({
           'username': email,
           'password': password,
         }),
       );
+      print(response.body);
+      print("Response: ${response.statusCode}");
 
       // Handle response
       if (response.statusCode == 200) {
@@ -60,6 +64,7 @@ class _LoginScreenState extends State<LoginScreen> {
         });
       }
     } catch (e) {
+      print('An error occurred: $e');
       print(e);
       setState(() {
         _errorMessage = 'An error occurred. Please try again.';
