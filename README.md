@@ -115,4 +115,4 @@ Ensure the mobile app points to the live Django back-end URL in the API_BASE_URL
 
 # screenshots of the app interfaces
 
-<img src="/Users/benjaminishimwe/Desktop/agritech_market_connect/LOGIN1.png">
+<img src="LOGIN1.png">
