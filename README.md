@@ -116,3 +116,5 @@ Ensure the mobile app points to the live Django back-end URL in the API_BASE_URL
 # screenshots of the app interfaces
 
 <img src="LOGIN1.png">
+<img src="DASHBOARD1.png">
+<img src="Django Admin.png">
