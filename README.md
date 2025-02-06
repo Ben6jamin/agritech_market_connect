@@ -111,4 +111,8 @@ Ensure the mobile app points to the live Django back-end URL in the API_BASE_URL
 # Figma Mockup design
    
    https://www.figma.com/design/xjosTIyfVs7IhzaemBDlQn/Agritech?node-id=0-1&t=CKKY1BC7zReGh4w2-1
-   
+
+
+# screenshots of the app interfaces
+
+<img src="/Users/benjaminishimwe/Desktop/agritech_market_connect/LOGIN1.png">
