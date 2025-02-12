@@ -1,3 +1,8 @@
+import 'package:agritech_carket_connect/screens/MarketPricesScreen.dart';
+import 'package:agritech_carket_connect/screens/WeatherUpdateScreen.dart';
+import 'package:agritech_carket_connect/screens/farmingTipsScreen.dart';
+import 'package:agritech_carket_connect/screens/fertilizersScreen.dart';
+import 'package:agritech_carket_connect/screens/seedsScreen.dart';
 import 'package:flutter/material.dart';
 
 import 'screens/dashboard.dart';
@@ -16,14 +21,19 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'AgriTech Market Connect',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.green[800] ?? Colors.greenAccent),
+        colorScheme: ColorScheme.fromSeed(
+            seedColor: Colors.green[800] ?? Colors.greenAccent),
         useMaterial3: true,
       ),
       initialRoute: '/login',
       routes: {
-        '/': (context) => const MyHomePage(title: 'AgriTech Market Connect'),
-        '/login': (context) => LoginScreen(),
+        '/' : (context) => MyHomePage(title: 'AgriTech Market Connect'),
         '/dashboard': (context) => DashboardScreen(),
+        '/seeds': (context) => SeedsScreen(),
+        '/fertilizers': (context) => FertilizersScreen(),
+        '/market-prices': (context) => MarketPricesScreen(),
+        '/weather-updates': (context) => WeatherUpdatesScreen(),
+        '/farming-tips': (context) => FarmingTipsScreen(),
       },
     );
   }
@@ -35,7 +45,7 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(      
+    return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(title),
@@ -55,6 +65,36 @@ class MyHomePage extends StatelessWidget {
                 Navigator.pushNamed(context, '/dashboard');
               },
               child: const Text('Dashboard'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/seeds');
+              },
+              child: const Text('Seeds'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/fertilizers');
+              },
+              child: const Text('Fertilizers'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/market-prices');
+              },
+              child: const Text('Market Prices'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/weather-updates');
+              },
+              child: const Text('Weather Updates'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/farming-tips');
+              },
+              child: const Text('Farming Tips'),
             ),
           ],
         ),

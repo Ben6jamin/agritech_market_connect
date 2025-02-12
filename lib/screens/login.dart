@@ -1,4 +1,6 @@
+import 'package:agritech_carket_connect/constants.dart';
 import 'package:agritech_carket_connect/screens/dashboard.dart';
+import 'package:agritech_carket_connect/screens/seedsScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -37,7 +39,7 @@ class _LoginScreenState extends State<LoginScreen> {
       print("username: $username");
       print("Password: $password");
       final response = await http.post(
-        Uri.parse('http://192.168.2.112:8000/api/login/'),
+        Uri.parse('$baseUrl/login/'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode({
           'username': username,
@@ -54,7 +56,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString('token', token);
-        Navigator.push(context, MaterialPageRoute(builder: (context) => DashboardScreen()));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => SeedsScreen()));
       } else {
         print(response.body);
         // Login failed
