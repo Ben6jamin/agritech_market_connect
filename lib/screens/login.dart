@@ -11,8 +11,8 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  // Controllers for email/phone and password fields
-  final TextEditingController _emailController = TextEditingController();
+  // Controllers for username/phone and password fields
+  final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
   // Error message to display
@@ -20,12 +20,12 @@ class _LoginScreenState extends State<LoginScreen> {
 
   // Function to handle login
   Future<void> _login() async {
-    // Get email/phone and password from controllers
-    final String email = _emailController.text.trim();
+    // Get username/phone and password from controllers
+    final String username = _usernameController.text.trim();
     final String password = _passwordController.text.trim();
 
     // Validate fields
-    if (email.isEmpty || password.isEmpty) {
+    if (username.isEmpty || password.isEmpty) {
       setState(() {
         _errorMessage = 'Please fill in all fields.';
       });
@@ -34,13 +34,13 @@ class _LoginScreenState extends State<LoginScreen> {
 
     // Send POST request to the Django backend
     try {
-      print("Email: $email");
+      print("username: $username");
       print("Password: $password");
       final response = await http.post(
         Uri.parse('http://192.168.2.112:8000/api/login/'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode({
-          'username': email,
+          'username': username,
           'password': password,
         }),
       );
@@ -95,11 +95,11 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               SizedBox(height: 40),
           
-              // Email/Phone Field
+              // username/Phone Field
               TextField(
-                controller: _emailController,
+                controller: _usernameController,
                 decoration: InputDecoration(
-                  labelText: 'Email/Phone',
+                  labelText: 'username',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(50),
                   ),
