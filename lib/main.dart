@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/login',
       routes: {
         '/' : (context) => MyHomePage(title: 'AgriTech Market Connect'),
-        '/dashboard': (context) => DashboardScreen(),
+        '/dashboard': (context) => SeedsScreen(),
         '/seeds': (context) => SeedsScreen(),
         '/fertilizers': (context) => FertilizersScreen(),
         '/market-prices': (context) => MarketPricesScreen(),
