@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'accounts',
     'dashboard',
     'rest_framework',
+    'rest_framework_simplejwt',
     
 ]
 
@@ -144,4 +145,18 @@ STORAGES = {
     "staticfiles": {
         "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
     },
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}
+
+from datetime import timedelta
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),  # Token expires in 1 hour
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),  # Refresh token lasts for 7 days
+    'AUTH_HEADER_TYPES': ('Bearer',),
 }

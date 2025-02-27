@@ -105,7 +105,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(50),
                   ),
-                  prefixIcon: Icon(Icons.email, color: Colors.green),
+                  prefixIcon: Icon(Icons.person, color: Colors.green),
                 ),
               ),
               SizedBox(height: 20),
@@ -152,18 +152,6 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               SizedBox(height: 10),
           
-              // Forgot Password Link
-              TextButton(
-                onPressed: () {
-                  // Navigate to Forgot Password screen
-                },
-                child: Text(
-                  'Forgot Password?',
-                  style: TextStyle(color: Colors.green[800]),
-                ),
-              ),
-              SizedBox(height: 10),
-          
               // Sign Up Link
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -171,7 +159,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   Text('Don’t have an account? '),
                   TextButton(
                     onPressed: () {
-                      // Navigate to Sign Up screen
+                      Navigator.pushNamed(context, '/signup');
                     },
                     child: Text(
                       'Sign Up',

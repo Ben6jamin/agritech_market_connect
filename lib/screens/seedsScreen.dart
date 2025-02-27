@@ -1,8 +1,10 @@
 import 'dart:convert';
+import 'package:agritech_carket_connect/screens/appDrawer.dart';
 import 'package:http/http.dart' as http;
 import 'package:agritech_carket_connect/constants.dart';
 import 'package:agritech_carket_connect/screens/seedsDetailScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SeedsScreen extends StatelessWidget {
   @override
@@ -11,14 +13,13 @@ class SeedsScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text('Dashboard'),
         backgroundColor: Colors.green[800],
-        actions: [
-          IconButton(
-            icon: Icon(Icons.notifications, color: Colors.white),
-            onPressed: () {
-              // Navigate to Notifications screen
-            },
-          ),
-        ],
+      ),
+      drawer: AppDrawer(
+        username: "John Doe",
+        email: "johndoe@example.com",
+        onLogout: () {
+          // Handle logout logic (e.g., clear session, navigate to login)
+        },
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -33,7 +34,7 @@ class SeedsScreen extends StatelessWidget {
 
             // Market Trends Section
             Text(
-              'Market Trends',
+              'Seeds Trends',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 10),
@@ -101,10 +102,10 @@ class SeedsScreen extends StatelessWidget {
                       style: TextStyle(fontSize: 16, color: Colors.white),
                       textAlign: TextAlign.center),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green[800],
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                    fixedSize: Size(170, 50)
-                  ),
+                      backgroundColor: Colors.green[800],
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      fixedSize: Size(170, 50)),
                 ),
                 ElevatedButton(
                   onPressed: () {
@@ -114,10 +115,10 @@ class SeedsScreen extends StatelessWidget {
                       style: TextStyle(fontSize: 16, color: Colors.white),
                       textAlign: TextAlign.center),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green[800],
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                    fixedSize: Size(170, 50)
-                  ),
+                      backgroundColor: Colors.green[800],
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      fixedSize: Size(170, 50)),
                 ),
               ],
             ),
@@ -133,10 +134,10 @@ class SeedsScreen extends StatelessWidget {
                       style: TextStyle(fontSize: 16, color: Colors.white),
                       textAlign: TextAlign.center),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green[800],
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                    fixedSize: Size(170, 50)
-                  ),
+                      backgroundColor: Colors.green[800],
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      fixedSize: Size(170, 50)),
                 ),
                 ElevatedButton(
                   onPressed: () {
@@ -146,10 +147,10 @@ class SeedsScreen extends StatelessWidget {
                       style: TextStyle(fontSize: 16, color: Colors.white),
                       textAlign: TextAlign.center),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green[800],
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                    fixedSize: Size(170, 50)
-                  ),
+                      backgroundColor: Colors.green[800],
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      fixedSize: Size(170, 50)),
                 ),
               ],
             )
@@ -161,7 +162,11 @@ class SeedsScreen extends StatelessWidget {
 
   Future<List> fetchSeeds() async {
     const url = '$baseUrl/seeds';
-    final response = await http.get(Uri.parse(url));
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final accessToken = prefs.getString('token');
+    final response = await http.get(Uri.parse(url), headers: {
+      'Authorization': 'Bearer $accessToken',
+    });
     if (response.statusCode == 200) {
       return json.decode(response.body);
     } else {

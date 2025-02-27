@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import (
     SeedListView, FertilizerListView, MarketPriceListView, 
-    WeatherForecastListView, FarmingTipListView
+    WeatherForecastListView, FarmingTipListView, FeedbacCreateView
 )
 
 urlpatterns = [
@@ -10,4 +10,5 @@ urlpatterns = [
     path('market-prices/', MarketPriceListView.as_view(), name='market-price-list'),
     path('weather-updates/', WeatherForecastListView.as_view(), name='weather-update-list'),
     path('farming-tips/', FarmingTipListView.as_view(), name='farming-tip-list'),
+    path('feedback/', FeedbacCreateView.as_view(), name='feedback-create'),
 ]

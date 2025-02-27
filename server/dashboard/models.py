@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 class Seed(models.Model):
     name = models.CharField(max_length=100, unique=True)
     description = models.TextField()
@@ -55,3 +55,11 @@ class WeatherForecast(models.Model):
     def __str__(self):
         return f"Weather for {self.date}"
 
+
+class FeedBack(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='feedbacks')
+    message = models.TextField()
+    date_sent = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Feedback from {self.name}"

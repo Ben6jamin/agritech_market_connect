@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Seed, Fertilizer, MarketPrice, WeatherForecast, FarmingTip
+from .models import FeedBack, Seed, Fertilizer, MarketPrice, WeatherForecast, FarmingTip
 
 class SeedSerializer(serializers.ModelSerializer):
     class Meta:
@@ -25,3 +25,8 @@ class FarmingTipSerializer(serializers.ModelSerializer):
     class Meta:
         model = FarmingTip
         fields = '__all__'
+        
+class FeedbackSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FeedBack
+        fields = ['message']

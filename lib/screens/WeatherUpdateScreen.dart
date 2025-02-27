@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:agritech_carket_connect/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class WeatherUpdatesScreen extends StatelessWidget {
   @override
@@ -56,7 +57,11 @@ class WeatherUpdatesScreen extends StatelessWidget {
 
   Future<List<dynamic>> fetchWeatherUpdates() async {
     const url = '$baseUrl/weather-updates';
-    final response = await http.get(Uri.parse(url));
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final accessToken = prefs.getString('token');
+    final response = await http.get(Uri.parse(url), headers: {
+      'Authorization': 'Bearer $accessToken',
+    });
     if (response.statusCode == 200) {
       return json.decode(response.body);
     } else {

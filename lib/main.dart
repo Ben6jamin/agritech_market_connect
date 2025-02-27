@@ -1,8 +1,10 @@
 import 'package:agritech_carket_connect/screens/MarketPricesScreen.dart';
 import 'package:agritech_carket_connect/screens/WeatherUpdateScreen.dart';
 import 'package:agritech_carket_connect/screens/farmingTipsScreen.dart';
+import 'package:agritech_carket_connect/screens/feedbackScreen.dart';
 import 'package:agritech_carket_connect/screens/fertilizersScreen.dart';
 import 'package:agritech_carket_connect/screens/seedsScreen.dart';
+import 'package:agritech_carket_connect/screens/signupScreen.dart';
 import 'package:flutter/material.dart';
 
 import 'screens/dashboard.dart';
@@ -28,12 +30,14 @@ class MyApp extends StatelessWidget {
       initialRoute: '/login',
       routes: {
         '/' : (context) => LoginScreen(),
+        '/signup': (context) => SignUpScreen(),
         '/dashboard': (context) => SeedsScreen(),
         '/seeds': (context) => SeedsScreen(),
         '/fertilizers': (context) => FertilizersScreen(),
         '/market-prices': (context) => MarketPricesScreen(),
         '/weather-updates': (context) => WeatherUpdatesScreen(),
         '/farming-tips': (context) => FarmingTipsScreen(),
+        '/feedback': (context) => FeedbackScreen(),
       },
     );
   }
