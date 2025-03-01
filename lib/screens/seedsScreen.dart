@@ -6,36 +6,65 @@ import 'package:agritech_carket_connect/screens/seedsDetailScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class SeedsScreen extends StatelessWidget {
+class SeedsScreen extends StatefulWidget {
+  final Function(bool) toggleTheme;
+  final ThemeMode themeMode;
+
+  const SeedsScreen(
+      {super.key, required this.toggleTheme, required this.themeMode});
+
+  @override
+  State<SeedsScreen> createState() => _SeedsScreenState();
+}
+
+class _SeedsScreenState extends State<SeedsScreen> {
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDarkMode = widget.themeMode == ThemeMode.dark;
+    print("Dark mode: $isDarkMode");
+
+    // Define theme-aware colors
+    final primaryColor = theme.colorScheme.primary;
+    final textColor = theme.textTheme.bodyLarge?.color;
+    final cardBackgroundColor = theme.cardColor;
+    final backgroundColor = theme.scaffoldBackgroundColor;
+    final chipTextColor = isDarkMode ? Colors.black : Colors.white;
+
+    // Define availability status colors that work well in both themes
+    final inStockColor = isDarkMode ? Colors.green.shade600 : Colors.green;
+    final outOfStockColor = isDarkMode ? Colors.red.shade700 : Colors.red;
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Dashboard'),
-        backgroundColor: Colors.green[800],
-      ),
+      backgroundColor: backgroundColor,
+      appBar: AppBar(),
       drawer: AppDrawer(
-        username: "John Doe",
-        email: "johndoe@example.com",
+        toggleTheme: widget.toggleTheme,
+        themeMode: widget.themeMode,
         onLogout: () {
-          // Handle logout logic (e.g., clear session, navigate to login)
+          logout(context);
         },
       ),
-      body: Padding(
+      body: Container(
+        color: backgroundColor,
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               'Hello, Farmer!',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              style: theme.textTheme.headlineMedium?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
             ),
             SizedBox(height: 20),
 
             // Market Trends Section
             Text(
               'Seeds Trends',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: theme.textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
             ),
             SizedBox(height: 10),
             Expanded(
@@ -45,7 +74,9 @@ class SeedsScreen extends StatelessWidget {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasError) {
-                    return Center(child: Text("Error loading seeds"));
+                    return Center(
+                        child: Text("Error loading seeds",
+                            style: TextStyle(color: textColor)));
                   } else {
                     final seeds = snapshot.data; // Replace with parsed data
                     return ListView.builder(
@@ -54,24 +85,43 @@ class SeedsScreen extends StatelessWidget {
                         final seed = seeds?[index];
                         return Card(
                           margin: EdgeInsets.all(8.0),
+                          color: cardBackgroundColor,
+                          elevation: isDarkMode ? 2 : 1,
+                          shadowColor:
+                              isDarkMode ? Colors.white24 : Colors.black26,
                           child: ListTile(
-                            leading: seed['image'] != null
-                                ? Image.network(seed['image'],
-                                    width: 50, height: 50)
-                                : Icon(Icons.eco),
-                            title: Text(seed['name']),
-                            subtitle:
-                                Text("Price: ${seed['price_per_kg']} RWF/kg"),
+                            leading: Container(
+                              padding: EdgeInsets.all(2),
+                              decoration: isDarkMode
+                                  ? BoxDecoration(
+                                      border: Border.all(
+                                          color: Colors.grey.shade700,
+                                          width: 1),
+                                      borderRadius: BorderRadius.circular(4),
+                                    )
+                                  : null,
+                              child: seed['image'] != null
+                                  ? Image.network(seed['image'],
+                                      width: 50, height: 50)
+                                  : Icon(Icons.eco, color: primaryColor),
+                            ),
+                            title: Text(seed['name'],
+                                style: TextStyle(color: textColor)),
+                            subtitle: Text(
+                              "Price: ${seed['price_per_kg']} RWF/kg",
+                              style:
+                                  TextStyle(color: textColor?.withOpacity(0.7)),
+                            ),
                             trailing: Chip(
                               label: Text(
                                 seed['availability_status']
                                     ? "In Stock"
                                     : "Out of Stock",
-                                style: TextStyle(color: Colors.white),
+                                style: TextStyle(color: chipTextColor),
                               ),
                               backgroundColor: seed['availability_status']
-                                  ? Colors.green
-                                  : Colors.red,
+                                  ? inStockColor
+                                  : outOfStockColor,
                             ),
                             onTap: () {
                               Navigator.push(
@@ -94,31 +144,17 @@ class SeedsScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/fertilizers');
-                  },
-                  child: Text('Fertilizers',
-                      style: TextStyle(fontSize: 16, color: Colors.white),
-                      textAlign: TextAlign.center),
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green[800],
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                      fixedSize: Size(170, 50)),
+                _buildNavigationButton(
+                  context: context,
+                  label: 'Fertilizers',
+                  route: '/fertilizers',
+                  theme: theme,
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/market-prices');
-                  },
-                  child: Text('Market Prices',
-                      style: TextStyle(fontSize: 16, color: Colors.white),
-                      textAlign: TextAlign.center),
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green[800],
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                      fixedSize: Size(170, 50)),
+                _buildNavigationButton(
+                  context: context,
+                  label: 'Market Prices',
+                  route: '/market-prices',
+                  theme: theme,
                 ),
               ],
             ),
@@ -126,36 +162,46 @@ class SeedsScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/weather-updates');
-                  },
-                  child: Text('Weather Updates',
-                      style: TextStyle(fontSize: 16, color: Colors.white),
-                      textAlign: TextAlign.center),
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green[800],
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                      fixedSize: Size(170, 50)),
+                _buildNavigationButton(
+                  context: context,
+                  label: 'Weather Updates',
+                  route: '/weather-updates',
+                  theme: theme,
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/farming-tips');
-                  },
-                  child: Text('Farming Tips',
-                      style: TextStyle(fontSize: 16, color: Colors.white),
-                      textAlign: TextAlign.center),
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green[800],
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                      fixedSize: Size(170, 50)),
+                _buildNavigationButton(
+                  context: context,
+                  label: 'Farming Tips',
+                  route: '/farming-tips',
+                  theme: theme,
                 ),
               ],
             )
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildNavigationButton({
+    required BuildContext context,
+    required String label,
+    required String route,
+    required ThemeData theme,
+  }) {
+    return ElevatedButton(
+      onPressed: () {
+        Navigator.pushNamed(context, route);
+      },
+      child: Text(
+        label,
+        style: TextStyle(fontSize: 16),
+        textAlign: TextAlign.center,
+      ),
+      style: ElevatedButton.styleFrom(
+        backgroundColor: theme.colorScheme.primary,
+        foregroundColor: theme.colorScheme.onPrimary,
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        fixedSize: Size(170, 50),
       ),
     );
   }
@@ -172,5 +218,12 @@ class SeedsScreen extends StatelessWidget {
     } else {
       throw Exception('Failed to load seeds');
     }
+  }
+
+  void logout(BuildContext context) {
+    SharedPreferences.getInstance().then((prefs) {
+      prefs.remove('token');
+      Navigator.pushReplacementNamed(context, '/');
+    });
   }
 }

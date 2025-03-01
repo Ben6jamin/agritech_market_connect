@@ -8,6 +8,10 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
+  final Function(bool) toggleTheme;
+  final ThemeMode themeMode;
+
+  LoginScreen({required this.toggleTheme, required this.themeMode});
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
@@ -52,17 +56,25 @@ class _LoginScreenState extends State<LoginScreen> {
       // Handle response
       if (response.statusCode == 200) {
         final Map<String, dynamic> responseData = json.decode(response.body);
-        final String token = responseData['access']; // Assuming the backend returns a token
+        final String token =
+            responseData['access']; // Assuming the backend returns a token
 
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString('token', token);
-        Navigator.push(context, MaterialPageRoute(builder: (context) => SeedsScreen()));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => SeedsScreen(
+                    toggleTheme: widget.toggleTheme,
+                    themeMode: widget.themeMode
+                    )));
       } else {
         print(response.body);
         // Login failed
         final Map<String, dynamic> errorData = json.decode(response.body);
         setState(() {
-          _errorMessage = errorData['error'] ?? 'Login failed. Please try again.';
+          _errorMessage =
+              errorData['error'] ?? 'Login failed. Please try again.';
         });
       }
     } catch (e) {
@@ -76,8 +88,33 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Theme-based colors
+    final bool isDarkMode = widget.themeMode == ThemeMode.dark;
+    final Color primaryColor = isDarkMode ? Colors.green[700]! : Colors.green[800]!;
+    final Color textColor = isDarkMode ? Colors.white : Colors.black87;
+    final Color backgroundColor = isDarkMode ? Color(0xFF121212) : Colors.white;
+    final Color cardColor = isDarkMode ? Color(0xFF1E1E1E) : Colors.white;
+    final Color accentColor = isDarkMode ? Colors.green : Colors.green;
+    final Color inputBorderColor = isDarkMode ? Colors.white38 : Colors.grey;
+    final Color inputFillColor = isDarkMode ? Colors.black12 : Colors.white;
+    final Color errorColor = Colors.red;
+    
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: backgroundColor,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        actions: [
+          IconButton(
+            icon: Icon(
+              isDarkMode ? Icons.wb_sunny : Icons.nightlight_round,
+              color: primaryColor,
+            ),
+            onPressed: () => widget.toggleTheme(!isDarkMode),
+          ),
+        ],
+      ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: SingleChildScrollView(
@@ -85,85 +122,117 @@ class _LoginScreenState extends State<LoginScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(height: 140),
+              SizedBox(height: 80),
               Text(
                 'AgriTech Market Connect',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 32,
                   fontWeight: FontWeight.bold,
-                  color: Colors.green[800],
+                  color: isDarkMode ? Colors.white : Colors.green[800],
                 ),
               ),
               SizedBox(height: 40),
-          
+
               // username/Phone Field
               TextField(
                 controller: _usernameController,
+                style: TextStyle(color: textColor),
                 decoration: InputDecoration(
-                  labelText: 'username',
+                  labelText: 'Username',
+                  labelStyle: TextStyle(color: textColor.withOpacity(0.7)),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(50),
+                    borderSide: BorderSide(color: inputBorderColor),
                   ),
-                  prefixIcon: Icon(Icons.person, color: Colors.green),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(50),
+                    borderSide: BorderSide(color: inputBorderColor),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(50),
+                    borderSide: BorderSide(color: accentColor),
+                  ),
+                  filled: true,
+                  fillColor: inputFillColor,
+                  prefixIcon: Icon(Icons.person, color: accentColor),
                 ),
               ),
               SizedBox(height: 20),
-          
+
               // Password Field
               TextField(
                 controller: _passwordController,
                 obscureText: true,
+                style: TextStyle(color: textColor),
                 decoration: InputDecoration(
                   labelText: 'Password',
+                  labelStyle: TextStyle(color: textColor.withOpacity(0.7)),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(50),
+                    borderSide: BorderSide(color: inputBorderColor),
                   ),
-                  prefixIcon: Icon(Icons.lock, color: Colors.green),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(50),
+                    borderSide: BorderSide(color: inputBorderColor),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(50),
+                    borderSide: BorderSide(color: accentColor),
+                  ),
+                  filled: true,
+                  fillColor: inputFillColor,
+                  prefixIcon: Icon(Icons.lock, color: accentColor),
                 ),
               ),
               SizedBox(height: 20),
-          
+
               // Error Message
               if (_errorMessage.isNotEmpty)
                 Text(
                   _errorMessage,
-                  style: TextStyle(color: Colors.red),
+                  style: TextStyle(color: errorColor),
                 ),
               SizedBox(height: 20),
-          
+
               // Login Button
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.6,
                 child: ElevatedButton(
                   onPressed: _login,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green[800],
+                    backgroundColor: primaryColor,
+                    foregroundColor: Colors.white,
                     padding: EdgeInsets.symmetric(vertical: 15),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(50),
                     ),
+                    elevation: isDarkMode ? 8 : 2,
+                    shadowColor: isDarkMode ? accentColor.withOpacity(0.5) : null,
                   ),
                   child: Text(
                     'Login',
-                    style: TextStyle(fontSize: 18, color: Colors.white),
+                    style: TextStyle(fontSize: 18),
                   ),
                 ),
               ),
               SizedBox(height: 10),
-          
+
               // Sign Up Link
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('Don’t have an account? '),
+                  Text(
+                    'Don\'t have an account? ',
+                    style: TextStyle(color: textColor),
+                  ),
                   TextButton(
                     onPressed: () {
                       Navigator.pushNamed(context, '/signup');
                     },
                     child: Text(
                       'Sign Up',
-                      style: TextStyle(color: Colors.green[800]),
+                      style: TextStyle(color: accentColor),
                     ),
                   ),
                 ],

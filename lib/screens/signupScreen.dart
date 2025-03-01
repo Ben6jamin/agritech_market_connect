@@ -15,13 +15,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _passwordController = TextEditingController();
   bool _isLoading = false;
   bool _obscurePassword = true;
+  bool _isDarkMode = false; // Track theme state
 
   Future<void> _signUp() async {
     if (!_formKey.currentState!.validate()) return;
-
-    // setState(() {
-    //   _isLoading = true;
-    // });
 
     final url = Uri.parse('$baseUrl/signup/');
     print(url);
@@ -36,10 +33,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
     print(response.body);
 
-    // setState(() {
-    //   _isLoading = false;
-    // });
-
     if (response.statusCode == 201) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -47,7 +40,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               style: TextStyle(color: Colors.green[800])),
         ),
       );
-      Navigator.pop(context); // Navigate back to login
+      Navigator.pop(context);
     } else {
       final errorResponse = jsonDecode(response.body);
       ScaffoldMessenger.of(context).showSnackBar(
@@ -59,7 +52,25 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: _isDarkMode ? Colors.black : Colors.white,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        backgroundColor: _isDarkMode ? Colors.grey[900] : Colors.green[800],
+        elevation: 0,
+        actions: [
+          IconButton(
+            icon: Icon(
+              _isDarkMode ? Icons.light_mode : Icons.dark_mode,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              setState(() {
+                _isDarkMode = !_isDarkMode;
+              });
+            },
+          ),
+        ],
+      ),
       body: Center(
         child: SingleChildScrollView(
           padding: EdgeInsets.symmetric(horizontal: 24, vertical: 40),
@@ -72,14 +83,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 style: TextStyle(
                   fontSize: 32,
                   fontWeight: FontWeight.bold,
-                  color: Colors.green[800],
+                  color: _isDarkMode ? Colors.white : Colors.green[800],
                 ),
               ),
               SizedBox(height: 20),
               Text(
                 "Sign up to get started with AgriTech Market Connect",
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 14, color: Colors.grey),
+                style: TextStyle(
+                    fontSize: 14,
+                    color: _isDarkMode ? Colors.grey[400] : Colors.grey),
               ),
               SizedBox(height: 30),
               Form(
@@ -89,12 +102,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     TextFormField(
                       controller: _usernameController,
                       decoration: InputDecoration(
-                        labelText: 'username',
+                        labelText: 'Username',
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(50),
                         ),
                         prefixIcon: Icon(Icons.person, color: Colors.green),
+                        filled: true,
+                        fillColor:
+                            _isDarkMode ? Colors.grey[800] : Colors.white,
                       ),
+                      style: TextStyle(
+                          color: _isDarkMode ? Colors.white : Colors.black),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return "Username is required";
@@ -111,7 +129,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           borderRadius: BorderRadius.circular(50),
                         ),
                         prefixIcon: Icon(Icons.email, color: Colors.green),
+                        filled: true,
+                        fillColor:
+                            _isDarkMode ? Colors.grey[800] : Colors.white,
                       ),
+                      style: TextStyle(
+                          color: _isDarkMode ? Colors.white : Colors.black),
                       keyboardType: TextInputType.emailAddress,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -142,7 +165,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             });
                           },
                         ),
+                        filled: true,
+                        fillColor:
+                            _isDarkMode ? Colors.grey[800] : Colors.white,
                       ),
+                      style: TextStyle(
+                          color: _isDarkMode ? Colors.white : Colors.black),
                       obscureText: _obscurePassword,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -176,17 +204,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           ),
                     SizedBox(height: 20),
                     GestureDetector(
-                      onTap: () =>
-                          Navigator.pop(context), // Navigate back to login
+                      onTap: () => Navigator.pop(context),
                       child: RichText(
                         text: TextSpan(
                           text: "Already have an account? ",
-                          style: TextStyle(color: Colors.black),
+                          style: TextStyle(
+                              color: _isDarkMode ? Colors.white : Colors.black),
                           children: [
                             TextSpan(
                               text: "Log In",
                               style: TextStyle(
-                                  color: Theme.of(context).primaryColor,
+                                  color: Colors.green[800],
                                   fontWeight: FontWeight.bold),
                             ),
                           ],

@@ -35,12 +35,6 @@ class FarmingTipsScreen extends StatelessWidget {
                       : Icon(Icons.lightbulb_outline, color: Colors.green),
                   title: Text(tip['title']),
                   subtitle: Text(tip['description']),
-                  trailing: TextButton(
-                    onPressed: () {
-                      // Navigate to a detailed screen if needed
-                    },
-                    child: Text("Read More"),
-                  ),
                 ),
               );
             },
