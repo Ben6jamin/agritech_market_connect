@@ -62,4 +62,4 @@ class FeedBack(models.Model):
     date_sent = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Feedback from {self.name}"
+        return f"Feedback from {self.user.username}"
