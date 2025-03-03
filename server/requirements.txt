@@ -1,10 +1,13 @@
 asgiref==3.7.2
 boto3==1.28.37
 botocore==1.31.52
+Brotli==1.1.0
 certifi==2023.11.17
 charset-normalizer==3.3.2
+click==8.1.8
 coreapi==2.3.3
 coreschema==0.0.4
+dj-database-url==2.3.0
 Django==4.2.2
 django-cors-headers==4.1.0
 django-environ==0.10.0
@@ -18,6 +21,7 @@ exceptiongroup==1.2.0
 factory-boy==3.3.0
 Faker==21.0.0
 gunicorn==23.0.0
+h11==0.14.0
 idna==3.6
 inflection==0.5.1
 iniconfig==2.0.0
@@ -46,4 +50,5 @@ tomli==2.0.1
 typing_extensions==4.6.3
 uritemplate==4.1.1
 urllib3==1.26.16
+uvicorn==0.34.0
 whitenoise==6.9.0
