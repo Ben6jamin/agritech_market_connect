@@ -10,3 +10,6 @@ python server/manage.py collectstatic --no-input
 
 # Apply any outstanding database migrations
 python server/manage.py migrate
+
+# create superuser
+echo "from django.contrib.auth.models import User; User.objects.create_superuser('admin', '1234567890', 'admin')" | python server/manage.py shell
