@@ -1,12 +1,32 @@
 # AgriTech Market Connect
 
-AgriTech Market Connect is a mobile application designed to empower farmers by providing up-to-date market trends and pricing information. This project consists of a **back-end** built with Django and a **mobile app** developed using Flutter.
+AgriTech Market Connect is a mobile application designed to empower smallholder farmers in Rwanda by providing real-time, localized market pricing and trend information. This user-centered solution aims to improve market access, enhance agricultural productivity, and create a more efficient market network for farmers.
 
----
+## Key Features
 
-## Prerequisites
+- **Real-time Market Pricing**: Provides farmers with up-to-date pricing information for various crops in their area.
+- **Weather Forecasting**: Integrates weather updates to help farmers make better decisions regarding their crops.
+- **Offline Functionality**: Works in areas with limited internet connectivity, enabling farmers to access crucial market and weather data.
+- **User-Centered Design**: Designed to be intuitive and easy to use, especially for farmers with limited technical experience.
+- **Location-Based Data**: Displays localized market data and trends based on the farmer’s location.
+- **User Authentication**: Farmers can register, log in, and personalize their experience.
+  
+## Technologies Used
 
-Ensure you have the following installed:
+- **Flutter**: Cross-platform mobile development framework used for building the app.
+- **Firebase**: Cloud platform for real-time database, user authentication, and storage.
+- **OpenWeather API**: Provides weather information to integrate real-time weather updates into the app.
+- **Google Maps API**: Used for location-based services to provide localized market data.
+- **Dart**: Programming language used for developing the mobile application.
+
+## Installation Instructions
+
+To run the AgriTech app locally, follow the steps below:
+
+### Prerequisites
+
+- Install **Flutter SDK**: [Get started with Flutter](https://flutter.dev/docs/get-started/install)
+- Install **Android Studio** or **Visual Studio Code** for development.
 
 - **Back-end**
   - Python 3.9+  
@@ -22,23 +42,25 @@ Ensure you have the following installed:
 
 ## Back-End Setup (Django)
 
-### 1. Clone the Repository
-```bash
-git clone https://github.com/Ben6jamin/agritech_market_connect.git
-cd agritech_market_connect/server
-```
+### Steps to Run the App
 
-### 2. Create a Virtual Environment
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/your-username/agritech-market-connect.git
+   cd agritech_market_connect/server
+
+
+ 2. **Create a Virtual Environment**:
 ```bash
 python3 -m venv venv
 source venv/bin/activate  # Use `venv\Scripts\activate` on Windows
 ```
 
-### 3. Install Dependencies
+ 3. **Install Dependencies**:
 ```bash
 pip install -r requirements.txt
 ```
-### 4. Run Migrations
+ 4. **Run Migrations**:
 ```bash
 python manage.py makemigrations
 python manage.py migrate
