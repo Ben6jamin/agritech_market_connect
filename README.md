@@ -137,10 +137,18 @@ Ensure the mobile app points to the live Django back-end URL in the API_BASE_URL
 
 # screenshots of the app interfaces
 
-<img src="1.png">
-<img src="2.png">
-<img src="3.png">
-<img src="4.png">
+<img src="1.jpeg">
+<img src="2.jpeg">
+<img src="3.jpeg">
+<img src="4.jpeg">
+<img src="5.jpeg">
+<img src="6.jpeg">
+<img src="7.jpeg">
+<img src="8.jpeg">
+<img src="9.jpeg">
+<img src="10.jpeg">
+
+
 
 
 # link of video (Demo)
