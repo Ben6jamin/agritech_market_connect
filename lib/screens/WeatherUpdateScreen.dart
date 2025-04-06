@@ -9,7 +9,7 @@ class WeatherUpdatesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Weather Updates"),
+        title: Text("Weather Updates available"),
       ),
       body: FutureBuilder<List<dynamic>>(
         future: fetchWeatherUpdates(),
