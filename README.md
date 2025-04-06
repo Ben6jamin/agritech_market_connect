@@ -155,3 +155,15 @@ Ensure the mobile app points to the live Django back-end URL in the API_BASE_URL
 
 https://drive.google.com/file/d/14qTMqmnZcSoAArm7L1z9h39jgsqAQcEH/view?usp=sharing
 
+# LINK OD DELPOYED APP
+
+https://drive.google.com/file/d/1SyafZVts2byCdtqT5tAoVJ52fFfX9UVr/view?usp=sharing
+
+For Django admin   
+
+Admin:
+https://mysite-3vzs.onrender.com/admin
+
+password : admin
+Username: admin
+
